@@ -69,7 +69,9 @@ leads to objective and high-quality results.
     def _setSamplingArgs(self, args):
         """ Set sampling related params"""
         args['--auto_local_healpix_order'] = self.localSearchAutoSamplingDeg.get()
-        
+        if self.relaxSymm.get():
+            args['--relax_sym'] = self.relaxSymm.get()
+
         if not self.doContinue:
             args['--healpix_order'] = self.angularSamplingDeg.get()
             args['--offset_range'] = self.offsetSearchRangePix.get()

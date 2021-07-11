@@ -193,7 +193,7 @@ class ProtRelionCreateMask3D(ProtCreateMask3D):
     def _methods(self):
         messages = [
             "*Mask creation*",
-            "We processed the volume %s." % self.inputVolume.get().getNameId(),
+            "We processed the volume %s." % self.getObjectTag('inputVolume'),
             "We binarized it at threshold of %0.3f. " % self.threshold,
             "We extended binary mask by %d voxels." % self.extend,
             "And, we smoothed it by applying a soft edge of %d voxels."
@@ -205,6 +205,6 @@ class ProtRelionCreateMask3D(ProtCreateMask3D):
                             "%d voxels." % self.edge)
         if self.hasAttribute('outputMask'):
             messages.append('We refer to the output mask as %s.'
-                            % self.outputMask.getNameId())
+                            % self.getObjectTag('outputMask'))
 
         return messages

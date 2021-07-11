@@ -71,6 +71,9 @@ class RelionBackRadiusWizard(ParticleMaskRadiusWizard):
         _label = params['label']
         ParticleMaskRadiusWizard.show(self, form, _value, _label, units=self._unit)
 
+    def setVar(self, form, label, value):
+        form.setVar(label, int(value))
+
 
 class RelionPartMaskDiameterWizard(RelionBackRadiusWizard):
     _targets = [(ProtRelionClassify2D, ['maskDiameterA']),

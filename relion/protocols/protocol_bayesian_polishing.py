@@ -37,6 +37,7 @@ from pwem.protocols import ProtParticles
 import pwem.emlib.metadata as md
 from pwem.constants import ALIGN_PROJ
 
+from relion import Plugin
 import relion.convert as convert
 from .protocol_base import ProtRelionBase
 
@@ -116,6 +117,15 @@ class ProtRelionBayesianPolishing(ProtParticles, ProtRelionBase):
         form.addParam('rescaledSize', params.IntParam, default=-1,
                       label="Re-scaled size (px)",
                       help="The re-scaled value needs to be an even number.")
+
+        if Plugin.IS_GT31():
+            form.addParam('saveFloat16', params.BooleanParam, default=False,
+                          label="Write output in float16?",
+                          expertLevel=params.LEVEL_ADVANCED,
+                          lavel="Write output in float16?",
+                          help="Relion can write output images in float16 "
+                               "MRC (mode 12) format to save disk space. "
+                               "By default, float32 format is used.")
 
         form.addSection(label='Train or Polish')
         form.addParam('operation', params.EnumParam, default=1,
@@ -346,6 +356,9 @@ class ProtRelionBayesianPolishing(ProtParticles, ProtRelionBase):
             args += "--bfac_maxfreq %0.3f " % self.maxResBfactor
             args += "--combine_frames "
 
+        if Plugin.IS_GT31() and self.saveFloat16:
+            args += "--float16 "
+
         args += "--j %d " % self.numberOfThreads
 
         self.runJob(self._getProgram('relion_motion_refine'), args)
@@ -415,6 +428,11 @@ class ProtRelionBayesianPolishing(ProtParticles, ProtRelionBase):
 
         if self.operation == self.OP_TRAIN and self.numberOfMpi > 1:
             errors.append("MPI is not supported for parameters estimation.")
+
+        if self.hasAttribute('saveFloat16') and self.saveFloat16:
+            errors.append("MRC float16 format is not yet supported by XMIPP, "
+                          "so you cannot use this option.")
+
         return errors
 
     def _warnings(self):

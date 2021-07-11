@@ -173,7 +173,7 @@ class ProtRelionPostprocess(ProtAnalysis3D, ProtRelionBase):
                       help='Use the mask even when the masked resolution '
                            'is worse than the unmasked resolution.')
 
-        form.addParallelSection(threads=0, mpi=1)
+        form.addParallelSection(threads=0, mpi=0)
 
     # -------------------------- INSERT steps functions ------------------------
     def _insertAllSteps(self):

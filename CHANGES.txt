@@ -1,3 +1,5 @@
+4.0:
+    - Relion 4.0 support. Float16 and EER options are disabled for now.
 3.1.2:
     - allow to use Environ.setPrepend (depends on scipion-em/scipion-pyworkflow#238) to set different prepend commands (e.g when optimized CPU module is available)
     - fixes for subtract no relion protocol

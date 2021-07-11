@@ -71,6 +71,8 @@ class ProtRelionClassify3D(ProtClassify3D, ProtRelionBase):
             # check if sigma_ang is in extra params
             # before adding the default value
             if self.localAngularSearch:
+                if self.relaxSymm.get():
+                    args['--relax_sym'] = self.relaxSymm.get()
                 if self.extraParams.hasValue():
                     if self.extraParams.get().find("--sigma_ang") == -1:
                         args['--sigma_ang'] = self.localAngularSearchRange.get() / 3.

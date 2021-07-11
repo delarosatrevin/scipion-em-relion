@@ -31,20 +31,22 @@ import pwem
 
 from .constants import *
 
-__version__ = '3.1.2'
+
+__version__ = '4.0'
 _logo = "relion_logo.jpg"
 _references = ['Scheres2012a', 'Scheres2012b', 'Kimanius2016', 'Zivanov2018']
 
 
 class Plugin(pwem.Plugin):
     _homeVar = RELION_HOME
-    _supportedVersions = [V3_1_0, V3_1_1, V3_1_2]
+    _supportedVersions = [V3_1_0, V3_1_1, V3_1_2, V4_0]
     _url = "https://github.com/scipion-em/scipion-em-relion"
 
     @classmethod
     def _defineVariables(cls):
-        cls._defineEmVar(RELION_HOME, 'relion-%s' % V3_1_2)
+        cls._defineEmVar(RELION_HOME, 'relion-%s' % V4_0)
         cls._defineVar(RELION_CUDA_LIB, pwem.Config.CUDA_LIB)
+        cls._defineVar(RELION_PYTHON, None)
 
     @classmethod
     def getEnviron(cls):
@@ -75,7 +77,7 @@ class Plugin(pwem.Plugin):
 
     @classmethod
     def IS_GT31(cls):
-        return not cls.getActiveVersion().startswith('3.1')
+        return cls.getActiveVersion().startswith('4')
 
     @classmethod
     def defineBinaries(cls, env):
@@ -88,4 +90,4 @@ class Plugin(pwem.Plugin):
                            url='https://github.com/3dem/relion/archive/%s.tar.gz' % v,
                            commands=relion_commands,
                            updateCuda=True,
-                           default=v == V3_1_2)
+                           default=v == V4_0)

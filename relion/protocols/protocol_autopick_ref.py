@@ -34,6 +34,7 @@ from pyworkflow.utils.properties import Message
 import pyworkflow.utils as pwutils
 from pyworkflow.constants import PROD
 
+from relion import Plugin
 import relion.convert
 from ..constants import *
 from .protocol_autopick import ProtRelionAutopickBase
@@ -127,12 +128,13 @@ class ProtRelion2Autopick(ProtRelionAutopickBase):
                            "go finer to adequately sample the asymmetric part of "
                            "the sphere.")
 
-        form.addParam('particleDiameter', params.IntParam, default=-1,
-                      label='Mask diameter (A)',
-                      help='Diameter of the circular mask that will be applied '
-                           'around the templates in Angstroms. When set to a '
-                           'negative value, this value is estimated '
-                           'automatically from the templates themselves.')
+        if not Plugin.IS_GT31():
+            form.addParam('particleDiameter', params.IntParam, default=-1,
+                          label='Mask diameter (A)',
+                          help='Diameter of the circular mask that will be applied '
+                               'around the templates in Angstroms. When set to a '
+                               'negative value, this value is estimated '
+                               'automatically from the templates themselves.')
 
         form.addParam('lowpassFilterRefs', params.IntParam, default=20,
                       label='Lowpass filter references (A)',
@@ -337,9 +339,11 @@ class ProtRelion2Autopick(ProtRelionAutopickBase):
         # - maxStd
         params = ' --pickname autopick'
         params += ' --odir "./"'
-        params += ' --particle_diameter %d' % self.particleDiameter
         params += ' --angpix %0.5f' % self.getInputMicrographs().getSamplingRate()
         params += ' --shrink %0.3f' % self.shrinkFactor
+
+        if not Plugin.IS_GT31():
+            params += ' --particle_diameter %d' % self.particleDiameter
 
         if self.doGpu:
             params += ' --gpu "%s"' % self.gpusToUse
@@ -416,7 +420,7 @@ class ProtRelion2Autopick(ProtRelionAutopickBase):
         errors = []
 
         if self.useInputReferences():
-            if self.particleDiameter > self.getInputDimA():
+            if not Plugin.IS_GT31() and (self.particleDiameter > self.getInputDimA()):
                 errors.append('Particle diameter (%d) can not be greater than '
                               'size (%d)' % (self.particleDiameter,
                                              self.getInputDimA()))
@@ -473,7 +477,10 @@ class ProtRelion2Autopick(ProtRelionAutopickBase):
         micsSampling = inputMics.getSamplingRate()
 
         if inputRefs is None:
-            boxSize = int(self.particleDiameter.get() * 1.25 / micsSampling)
+            if Plugin.IS_GT31():
+                boxSize = 128
+            else:
+                boxSize = int(self.particleDiameter.get() * 1.25 / micsSampling)
         else:
             # Scale boxsize if the pixel size of the references is not the same
             # of the micrographs

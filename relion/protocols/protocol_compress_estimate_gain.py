@@ -117,10 +117,6 @@ class ProtRelionCompressEstimateGain(ProtProcessMovies):
     def _validate(self):
         errors = []
 
-        if not relion.Plugin.getActiveVersion():
-            errors = ["Could not detect the current Relion version. \n"
-                      "RELION_HOME='%s'" % relion.Plugin.getHome()]
-
         return errors
 
     def getOutputGain(self):

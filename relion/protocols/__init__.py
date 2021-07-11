@@ -23,6 +23,7 @@
 # *  e-mail address 'scipion@cnb.csic.es'
 # *
 # **************************************************************************
+from relion import Plugin
 
 from .protocol_assign_optic_groups import ProtRelionAssignOpticsGroup
 from .protocol_autopick_log import ProtRelionAutopickLoG
@@ -42,7 +43,6 @@ from .protocol_export_ctf import ProtRelionExportCtf
 from .protocol_export_particles import ProtRelionExportParticles
 from .protocol_extract_particles import ProtRelionExtractParticles
 from .protocol_gentle_clean import ProtRelionCleanJobs
-from .protocol_initialmodel import ProtRelionInitialModel
 from .protocol_localres import ProtRelionLocalRes
 from .protocol_motioncor import ProtRelionMotioncor
 from .protocol_multibody import ProtRelionMultiBody
@@ -53,3 +53,9 @@ from .protocol_refine3d import ProtRelionRefine3D
 from .protocol_remove_views import ProtRelionRemovePrefViews
 from .protocol_subtract import ProtRelionSubtract
 from .protocol_symmetrize_volume import ProtRelionSymmetrizeVolume
+
+if Plugin.IS_GT31():
+    from .protocol_select_classes import ProtRelionSelectClasses2D
+    from .protocol_initialmodel import ProtRelionInitialModel
+else:
+    from ._legacy.protocol31_initialmodel import ProtRelionInitialModel

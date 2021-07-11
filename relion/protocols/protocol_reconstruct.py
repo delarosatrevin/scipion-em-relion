@@ -57,10 +57,10 @@ class ProtRelionReconstruct(ProtReconstruct3D, ProtRelionBase):
                       help='Select the input images from the project.')
         form.addParam('symmetryGroup', StringParam, default='c1',
                       label="Symmetry group",
-                      help='See [[Relion Symmetry][http://www2.mrc-lmb.cam.ac.uk/'
-                           'relion/index.php/Conventions_%26_File_formats#Symmetry]] '
-                           'page for a description of the symmetry format '
-                           'accepted by Relion')
+                      help='See [[https://relion.readthedocs.io/'
+                           'en/latest/Reference/Conventions.html#symmetry]'
+                           '[Relion Symmetry]] page for a description '
+                           'of the symmetry format accepted by Relion')
         form.addParam('maxRes', FloatParam, default=-1,
                       label="Maximum resolution (A)",  
                       help='Maximum resolution (in Angstrom) to consider \n'

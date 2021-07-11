@@ -121,10 +121,6 @@ class ProtRelionCompressMovies(ProtAlignMovies):
         # Check base validation before the specific ones for Motioncor
         errors = ProtAlignMovies._validate(self)
 
-        if not relion.Plugin.getActiveVersion():
-            errors.append("Could not detect the current Relion version. \n"
-                          "RELION_HOME='%s'" % relion.Plugin.getHome())
-
         return errors
 
     # ------------------------ Extra BASE functions ---------------------------

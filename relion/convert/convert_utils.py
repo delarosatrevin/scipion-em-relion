@@ -31,6 +31,7 @@ newer Relion3.1 routines and old ones.
 """
 
 import os
+import math
 from emtable import Table
 
 import pyworkflow.utils as pwutils
@@ -204,10 +205,9 @@ def convertMask(img, outputPath, newPix=None,
 
     params = '--i %s --o %s --angpix %0.5f' % (imgFn, outFn, inPix)
 
-    if newPix is not None:
-        # be careful with this rescale param
-        # because introduce some artefacts even if
-        # the sampling is the same than the input 3D mask
+    if newPix is not None and not math.isclose(newPix, inPix, abs_tol=0.001):
+        # be careful with this rescale param because it may
+        # introduce some artefacts if the sampling is the same as the input
         params += ' --rescale_angpix %0.5f' % newPix
 
     if newDim is not None:
