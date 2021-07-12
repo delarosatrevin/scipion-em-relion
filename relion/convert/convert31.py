@@ -178,7 +178,7 @@ class OpticsGroups:
     def create(**kwargs):
         opticsString1 = """
 
-# version 30001
+# version 40001
 
 data_optics
 
@@ -289,9 +289,9 @@ class Writer(WriterBase):
 
         with open(starFile, 'w') as f:
             f.write("# Star file generated with Scipion\n")
-            f.write("# version 30001\n")
+            f.write("# version 40001\n")
             self._optics.toStar(f)
-            f.write("# version 30001\n")
+            f.write("# version 40001\n")
             micsTable.writeStar(f, tableName=tableName)
 
     def _objToRow(self, obj, row, attributes):
@@ -448,9 +448,9 @@ class Writer(WriterBase):
         with open(starFile, 'w') as f:
             # Write particles table
             f.write("# Star file generated with Scipion\n")
-            f.write("\n# version 30001\n")
+            f.write("\n# version 40001\n")
             self._optics.toStar(f)
-            f.write("# version 30001\n")
+            f.write("# version 40001\n")
             # Write header first
             partsWriter = Table.Writer(f)
             partsWriter.writeTableName('particles')
